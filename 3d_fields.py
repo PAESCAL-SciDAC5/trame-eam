@@ -2163,6 +2163,13 @@ renderView4.CameraViewAngle = 17.01927597555242
 renderView4.CameraParallelScale = 201.76781210093955
 
 #--------------------------------------------
+views = []
+def update_views(**kwargs):
+  for v in views:
+    v.update()
+
+ctrl.on_server_ready.add(ctrl.view_update)
+ctrl.view_update = update_views
 
 with SinglePageLayout(server) as layout:
   with layout.content:
@@ -2170,14 +2177,14 @@ with SinglePageLayout(server) as layout:
     with vuetify.VContainer(fluid=True, classes="pa-0 fill-height"):
       with vuetify.VRow(dense=True, style="height: 50%;"):
         with vuetify.VCol():
-          paraview.VtkRemoteView(renderView1, ref="view1")
+          views.append(paraview.VtkLocalView(renderView1, ref="view1"))
         with vuetify.VCol():
-          paraview.VtkRemoteView(renderView2, ref="view2")
+          views.append(paraview.VtkLocalView(renderView2, ref="view2"))
       with vuetify.VRow(dense=True, style="height: 50%;"):
-          with vuetify.VCol():
-            paraview.VtkRemoteView(renderView3, ref="view3")
-          with vuetify.VCol():
-            paraview.VtkRemoteView(renderView4, ref="view4")
+        with vuetify.VCol():
+          views.append(paraview.VtkLocalView(renderView3, ref="view3"))
+        with vuetify.VCol():
+          views.append(paraview.VtkLocalView(renderView4, ref="view4"))
 
 
 server.start()
