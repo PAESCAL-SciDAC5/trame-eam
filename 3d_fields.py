@@ -4,7 +4,6 @@
 #paraview.compatibility.minor = 11
 
 #### import the simple module from the paraview
-from paraview.web import venv
 from paraview.simple import *
 
 from trame.app import get_server
@@ -176,37 +175,37 @@ pD_1800_ad4fd8_ANN_climo_SEncDisplay.OpacityComponent = ''
 pD_1800_ad4fd8_ANN_climo_SEncDisplay.SelectMapper = 'Projected tetra'
 pD_1800_ad4fd8_ANN_climo_SEncDisplay.SamplingDimensions = [128, 128, 128]
 pD_1800_ad4fd8_ANN_climo_SEncDisplay.UseFloatingPointFrameBuffer = 1
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.SelectInputVectors = [None, '']
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.NumberOfSteps = 40
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.StepSize = 0.25
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.NormalizeVectors = 1
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.EnhancedLIC = 1
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.ColorMode = 'Blend'
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.LICIntensity = 0.8
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.MapModeBias = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.EnhanceContrast = 'Off'
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.LowLICContrastEnhancementFactor = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.HighLICContrastEnhancementFactor = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.LowColorContrastEnhancementFactor = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.HighColorContrastEnhancementFactor = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.AntiAlias = 0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.MaskOnSurface = 1
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.MaskThreshold = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.MaskIntensity = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.MaskColor = [0.5, 0.5, 0.5]
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.GenerateNoiseTexture = 0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.NoiseType = 'Gaussian'
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.NoiseTextureSize = 128
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.NoiseGrainSize = 2
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.MinNoiseValue = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.MaxNoiseValue = 0.8
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.NumberOfNoiseLevels = 1024
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.ImpulseNoiseProbability = 1.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.ImpulseNoiseBackgroundValue = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.NoiseGeneratorSeed = 1
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.CompositeStrategy = 'AUTO'
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.UseLICForLOD = 0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay.WriteLog = ''
+#pD_1800_ad4fd8_ANN_climo_SEncDisplay.SelectInputVectors = [None, '']
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.NumberOfSteps = 40
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.StepSize = 0.25
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.NormalizeVectors = 1
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.EnhancedLIC = 1
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.ColorMode = 'Blend'
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.LICIntensity = 0.8
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.MapModeBias = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.EnhanceContrast = 'Off'
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.LowLICContrastEnhancementFactor = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.HighLICContrastEnhancementFactor = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.LowColorContrastEnhancementFactor = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.HighColorContrastEnhancementFactor = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.AntiAlias = 0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.MaskOnSurface = 1
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.MaskThreshold = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.MaskIntensity = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.MaskColor = [0.5, 0.5, 0.5]
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.GenerateNoiseTexture = 0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.NoiseType = 'Gaussian'
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.NoiseTextureSize = 128
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.NoiseGrainSize = 2
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.MinNoiseValue = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.MaxNoiseValue = 0.8
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.NumberOfNoiseLevels = 1024
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.ImpulseNoiseProbability = 1.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.ImpulseNoiseBackgroundValue = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.NoiseGeneratorSeed = 1
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.CompositeStrategy = 'AUTO'
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.UseLICForLOD = 0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay.WriteLog = ''
 
 # init the 'PiecewiseFunction' selected for 'OSPRayScaleFunction'
 pD_1800_ad4fd8_ANN_climo_SEncDisplay.OSPRayScaleFunction.Points = [0.0, 0.0, 0.5, 0.0, 1.0, 1.0, 0.5, 0.0]
@@ -587,12 +586,12 @@ uLUT = GetColorTransferFunction('U')
 uPWF = GetOpacityTransferFunction('U')
 
 # get 2D transfer function for 'U'
-uTF2D = GetTransferFunction2D('U')
+uTF2D = GetColorTransferFunction('U')
 
 # reset view to fit data bounds
 renderView1.ResetCamera(-2.8421709430404007e-13, 360.0, -90.0, 90.0, 0.0, 29.0, True)
 
-renderView1.ResetActiveCameraToPositiveZ()
+#renderView1.ResetActiveCameraToPositiveZ()
 
 # reset view to fit data
 renderView1.ResetCamera(False)
@@ -741,37 +740,37 @@ pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.OpacityComponent = ''
 pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.SelectMapper = 'Projected tetra'
 pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.SamplingDimensions = [128, 128, 128]
 pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.UseFloatingPointFrameBuffer = 1
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.SelectInputVectors = [None, '']
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.NumberOfSteps = 40
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.StepSize = 0.25
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.NormalizeVectors = 1
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.EnhancedLIC = 1
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.ColorMode = 'Blend'
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.LICIntensity = 0.8
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.MapModeBias = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.EnhanceContrast = 'Off'
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.LowLICContrastEnhancementFactor = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.HighLICContrastEnhancementFactor = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.LowColorContrastEnhancementFactor = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.HighColorContrastEnhancementFactor = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.AntiAlias = 0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.MaskOnSurface = 1
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.MaskThreshold = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.MaskIntensity = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.MaskColor = [0.5, 0.5, 0.5]
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.GenerateNoiseTexture = 0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.NoiseType = 'Gaussian'
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.NoiseTextureSize = 128
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.NoiseGrainSize = 2
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.MinNoiseValue = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.MaxNoiseValue = 0.8
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.NumberOfNoiseLevels = 1024
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.ImpulseNoiseProbability = 1.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.ImpulseNoiseBackgroundValue = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.NoiseGeneratorSeed = 1
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.CompositeStrategy = 'AUTO'
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.UseLICForLOD = 0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.WriteLog = ''
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.SelectInputVectors = [None, '']
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.NumberOfSteps = 40
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.StepSize = 0.25
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.NormalizeVectors = 1
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.EnhancedLIC = 1
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.ColorMode = 'Blend'
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.LICIntensity = 0.8
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.MapModeBias = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.EnhanceContrast = 'Off'
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.LowLICContrastEnhancementFactor = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.HighLICContrastEnhancementFactor = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.LowColorContrastEnhancementFactor = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.HighColorContrastEnhancementFactor = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.AntiAlias = 0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.MaskOnSurface = 1
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.MaskThreshold = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.MaskIntensity = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.MaskColor = [0.5, 0.5, 0.5]
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.GenerateNoiseTexture = 0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.NoiseType = 'Gaussian'
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.NoiseTextureSize = 128
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.NoiseGrainSize = 2
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.MinNoiseValue = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.MaxNoiseValue = 0.8
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.NumberOfNoiseLevels = 1024
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.ImpulseNoiseProbability = 1.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.ImpulseNoiseBackgroundValue = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.NoiseGeneratorSeed = 1
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.CompositeStrategy = 'AUTO'
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.UseLICForLOD = 0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.WriteLog = ''
 
 # init the 'PiecewiseFunction' selected for 'OSPRayScaleFunction'
 pD_1800_ad4fd8_ANN_climo_SEncDisplay_1.OSPRayScaleFunction.Points = [0.0, 0.0, 0.5, 0.0, 1.0, 1.0, 0.5, 0.0]
@@ -1306,7 +1305,7 @@ AssignViewToLayout(view=renderView4, layout=layout1, hint=6)
 # set active view
 SetActiveView(renderView2)
 
-renderView2.ResetActiveCameraToNegativeZ()
+#renderView2.ResetActiveCameraToNegativeZ()
 
 # reset view to fit data
 renderView2.ResetCamera(False)
@@ -1320,7 +1319,7 @@ SetActiveView(renderView1)
 # reset view to fit data
 renderView1.ResetCamera(True)
 
-renderView1.ResetActiveCameraToPositiveZ()
+#renderView1.ResetActiveCameraToPositiveZ()
 
 # reset view to fit data
 renderView1.ResetCamera(False)
@@ -1469,37 +1468,37 @@ pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.OpacityComponent = ''
 pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.SelectMapper = 'Projected tetra'
 pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.SamplingDimensions = [128, 128, 128]
 pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.UseFloatingPointFrameBuffer = 1
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.SelectInputVectors = [None, '']
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.NumberOfSteps = 40
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.StepSize = 0.25
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.NormalizeVectors = 1
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.EnhancedLIC = 1
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.ColorMode = 'Blend'
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.LICIntensity = 0.8
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.MapModeBias = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.EnhanceContrast = 'Off'
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.LowLICContrastEnhancementFactor = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.HighLICContrastEnhancementFactor = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.LowColorContrastEnhancementFactor = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.HighColorContrastEnhancementFactor = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.AntiAlias = 0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.MaskOnSurface = 1
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.MaskThreshold = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.MaskIntensity = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.MaskColor = [0.5, 0.5, 0.5]
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.GenerateNoiseTexture = 0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.NoiseType = 'Gaussian'
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.NoiseTextureSize = 128
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.NoiseGrainSize = 2
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.MinNoiseValue = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.MaxNoiseValue = 0.8
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.NumberOfNoiseLevels = 1024
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.ImpulseNoiseProbability = 1.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.ImpulseNoiseBackgroundValue = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.NoiseGeneratorSeed = 1
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.CompositeStrategy = 'AUTO'
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.UseLICForLOD = 0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.WriteLog = ''
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.SelectInputVectors = [None, '']
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.NumberOfSteps = 40
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.StepSize = 0.25
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.NormalizeVectors = 1
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.EnhancedLIC = 1
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.ColorMode = 'Blend'
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.LICIntensity = 0.8
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.MapModeBias = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.EnhanceContrast = 'Off'
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.LowLICContrastEnhancementFactor = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.HighLICContrastEnhancementFactor = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.LowColorContrastEnhancementFactor = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.HighColorContrastEnhancementFactor = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.AntiAlias = 0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.MaskOnSurface = 1
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.MaskThreshold = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.MaskIntensity = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.MaskColor = [0.5, 0.5, 0.5]
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.GenerateNoiseTexture = 0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.NoiseType = 'Gaussian'
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.NoiseTextureSize = 128
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.NoiseGrainSize = 2
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.MinNoiseValue = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.MaxNoiseValue = 0.8
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.NumberOfNoiseLevels = 1024
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.ImpulseNoiseProbability = 1.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.ImpulseNoiseBackgroundValue = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.NoiseGeneratorSeed = 1
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.CompositeStrategy = 'AUTO'
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.UseLICForLOD = 0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.WriteLog = ''
 
 # init the 'PiecewiseFunction' selected for 'OSPRayScaleFunction'
 pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.OSPRayScaleFunction.Points = [0.0, 0.0, 0.5, 0.0, 1.0, 1.0, 0.5, 0.0]
@@ -1697,7 +1696,7 @@ pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.RescaleTransferFunctionToDataRange(True, 
 # show color bar/color legend
 pD_1800_ad4fd8_ANN_climo_SEncDisplay_2.SetScalarBarVisibility(renderView3, True)
 
-renderView3.ResetActiveCameraToPositiveX()
+# renderView3.ResetActiveCameraToPositiveX()
 
 # reset view to fit data
 renderView3.ResetCamera(False)
@@ -1846,37 +1845,37 @@ pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.OpacityComponent = ''
 pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.SelectMapper = 'Projected tetra'
 pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.SamplingDimensions = [128, 128, 128]
 pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.UseFloatingPointFrameBuffer = 1
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.SelectInputVectors = [None, '']
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.NumberOfSteps = 40
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.StepSize = 0.25
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.NormalizeVectors = 1
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.EnhancedLIC = 1
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.ColorMode = 'Blend'
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.LICIntensity = 0.8
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.MapModeBias = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.EnhanceContrast = 'Off'
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.LowLICContrastEnhancementFactor = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.HighLICContrastEnhancementFactor = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.LowColorContrastEnhancementFactor = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.HighColorContrastEnhancementFactor = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.AntiAlias = 0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.MaskOnSurface = 1
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.MaskThreshold = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.MaskIntensity = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.MaskColor = [0.5, 0.5, 0.5]
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.GenerateNoiseTexture = 0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.NoiseType = 'Gaussian'
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.NoiseTextureSize = 128
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.NoiseGrainSize = 2
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.MinNoiseValue = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.MaxNoiseValue = 0.8
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.NumberOfNoiseLevels = 1024
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.ImpulseNoiseProbability = 1.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.ImpulseNoiseBackgroundValue = 0.0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.NoiseGeneratorSeed = 1
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.CompositeStrategy = 'AUTO'
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.UseLICForLOD = 0
-pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.WriteLog = ''
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.SelectInputVectors = [None, '']
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.NumberOfSteps = 40
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.StepSize = 0.25
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.NormalizeVectors = 1
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.EnhancedLIC = 1
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.ColorMode = 'Blend'
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.LICIntensity = 0.8
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.MapModeBias = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.EnhanceContrast = 'Off'
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.LowLICContrastEnhancementFactor = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.HighLICContrastEnhancementFactor = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.LowColorContrastEnhancementFactor = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.HighColorContrastEnhancementFactor = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.AntiAlias = 0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.MaskOnSurface = 1
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.MaskThreshold = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.MaskIntensity = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.MaskColor = [0.5, 0.5, 0.5]
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.GenerateNoiseTexture = 0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.NoiseType = 'Gaussian'
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.NoiseTextureSize = 128
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.NoiseGrainSize = 2
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.MinNoiseValue = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.MaxNoiseValue = 0.8
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.NumberOfNoiseLevels = 1024
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.ImpulseNoiseProbability = 1.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.ImpulseNoiseBackgroundValue = 0.0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.NoiseGeneratorSeed = 1
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.CompositeStrategy = 'AUTO'
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.UseLICForLOD = 0
+# pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.WriteLog = ''
 
 # init the 'PiecewiseFunction' selected for 'OSPRayScaleFunction'
 pD_1800_ad4fd8_ANN_climo_SEncDisplay_3.OSPRayScaleFunction.Points = [0.0, 0.0, 0.5, 0.0, 1.0, 1.0, 0.5, 0.0]
