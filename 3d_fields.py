@@ -349,12 +349,12 @@ def setup_axes(source, render_view, z_scale):
         render_view.AxesGrid.ZTitle = f"{name} (hPa)"
 
     render_view.AxesGrid.Visibility = 1
-    render_view.AxesGrid.DataScale = [1.0, 1.0, z_scale]
+    render_view.AxesGrid.DataScale = [1.0, 1.0, -z_scale]
 
 
 def setup_pipeline(source):
     calculator = PythonCalculator(registrationName="PythonCalculator1", Input=source)
-    calculator.Expression = "-points[:,2] + lev"
+    calculator.Expression = "-(abs(points[:,2] + lev))"
 
     warp_by_scalar = WarpByScalar(registrationName="WarpByScalar1", Input=calculator)
     warp_by_scalar.Scalars = ["POINTS", "result"]
