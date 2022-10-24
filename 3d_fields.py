@@ -189,22 +189,7 @@ def create_source(args):
     return source
 
 
-def array_names(dataset):
-    return [
-        dataset.PointData.GetArray(i).GetName()
-        for i in range(0, dataset.PointData.GetNumberOfArrays())
-    ]
-
-
-# ----------------------------------------------------------------
-# setup the visualization in view 'render_view_1'
-# ----------------------------------------------------------------
-
-
-def setup_visualization(source, render_view):
-    # show data from pD_1800_ad4fd8_ANN_climo_SEnc
-    display = Show(source, render_view, "UnstructuredGridRepresentation")
-
+def setup_visualization(display, z_scale, render_view):
     # get 2D transfer function for 'U'
     uTF2D = GetTransferFunction2D("U")
 
@@ -239,6 +224,7 @@ def setup_visualization(source, render_view):
     display.SelectTCoordArray = "None"
     display.SelectNormalArray = "None"
     display.SelectTangentArray = "None"
+    display.Scale = [1.0, 1.0, z_scale]
     display.Texture = None
     display.BaseColorTexture = None
     display.NormalTexture = None
@@ -265,6 +251,7 @@ def setup_visualization(source, render_view):
     display.OpacityArrayName = ["POINTS", "ANRAIN"]
     display.SelectInputVectors = ["POINTS", ""]
     display.WriteLog = ""
+    display.PolarAxes.Scale = [1.0, 1.0, z_scale]
 
     # init the 'PiecewiseFunction' selected for 'ScaleTransferFunction'
     display.ScaleTransferFunction.Points = [
@@ -339,6 +326,42 @@ def create_single_page(render_views):
     server.start()
 
 
+def z_axes_array_names(source):
+    names = source.PointData.keys()
+    return [name for name in names if name in ["lev", "ilev"]]
+
+
+def z_axes_scale(source):
+    bounds = source.GetDataInformation().GetBounds()
+    y_bounds = bounds[2:4]
+    y_delta = abs(y_bounds[0] - y_bounds[1])
+    z_bounds = bounds[4:6]
+    z_delta = abs(z_bounds[0] - z_bounds[1])
+
+    return z_delta / y_delta
+
+
+def setup_axes(source, render_view, z_scale):
+    names = z_axes_array_names(source)
+    name = names[0]
+
+    if name in ["lev", "ilev"]:
+        render_view.AxesGrid.ZTitle = f"{name} (hPa)"
+
+    render_view.AxesGrid.Visibility = 1
+    render_view.AxesGrid.DataScale = [1.0, 1.0, z_scale]
+
+
+def setup_pipeline(source):
+    calculator = PythonCalculator(registrationName="PythonCalculator1", Input=source)
+    calculator.Expression = "-points[:,2] + lev"
+
+    warp_by_scalar = WarpByScalar(registrationName="WarpByScalar1", Input=calculator)
+    warp_by_scalar.Scalars = ["POINTS", "result"]
+
+    return warp_by_scalar
+
+
 def main():
     server = get_server()
     server.cli.add_argument(
@@ -349,13 +372,18 @@ def main():
         required=True,
     )
     args = server.cli.parse_args()
-    source = create_source(args)
+    reader = create_source(args)
+    source = setup_pipeline(reader)
+    source.UpdatePipeline()
+    z_scale = z_axes_scale(reader)
 
     render_views = []
     for i in range(0, 4):
         render_view = create_render_view()
-        setup_visualization(source, render_view)
+        display = Show(source, render_view, "UnstructuredGridRepresentation")
+        setup_visualization(display, z_scale, render_view)
         setup_camera(render_view, camera_config[i])
+        setup_axes(source, render_view, z_scale)
         render_views.append(render_view)
 
     create_layout(render_views)
