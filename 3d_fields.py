@@ -12,354 +12,371 @@ from trame.app import get_server
 from trame.widgets import vuetify, paraview
 from trame.ui.vuetify import SinglePageLayout
 
-camera_config = [
-    {
-        "cameraPosition": [179.99999999999986, 0.0, -765.0709624885501],
-        "cameraFocalPoint": [179.99999999999986, 0.0, 14.5],
-        "cameraViewAngle": 17.676056338028168,
-        "cameraParallelScale": 201.76781210093955,
-    },
-    {
-        "cameraPosition": [179.99999999999986, 0.0, 794.0709624885501],
-        "cameraFocalPoint": [179.99999999999986, 0.0, 14.5],
-        "cameraViewAngle": 17.653972731546776,
-        "cameraParallelScale": 201.76781210093955,
-    },
-    {
-        "cameraPosition": [-599.5709624885502, 0.0, 14.5],
-        "cameraFocalPoint": [179.99999999999986, 0.0, 14.5],
-        "cameraViewUp": [0.0, 0.0, 1.0],
-        "cameraViewAngle": 11.244131455399062,
-        "cameraParallelScale": 201.76781210093955,
-    },
-    {
-        "cameraPosition": [-513.7999767022803, -350.7482081356252, 72.36339406643907],
-        "cameraFocalPoint": [179.99999999999986, 0.0, 14.5],
-        "cameraViewUp": [-0.17659118226024734, 0.49012326212087765, 0.8535776135044297],
-        "cameraViewAngle": 17.01927597555242,
-        "cameraParallelScale": 201.76781210093955,
-    },
-]
+from math import log
+
+DEFAULT_ARRAY = "CLOUD"
+Z_SCALARS = ["lev", "ilev", "Z3"]
+# TODO We should be able to get these from teh NetCDF
+Z_SCALARS_UNITS = {"lev": "hPa", "ilev": "hPa", "Z3": "m"}
 
 
-def create_render_view():
-    render_view = CreateView("RenderView")
-    render_view.ViewSize = [1420, 857]
-    render_view.AxesGrid = "GridAxes3DActor"
-    render_view.CenterOfRotation = [179.99999999999986, 0.0, 14.5]
-    render_view.StereoType = "Crystal Eyes"
+class ProcessingPipeline:
+    def __init__(self, reader):
+        self.reader = reader
+        self._z_ln = False
 
-    return render_view
+        self.reader.UpdatePipeline()
+        names = [name for name in self.reader.PointData.keys() if name in Z_SCALARS]
+        self._z_scalar = names[0]
+        self.calculator = PythonCalculator(
+            registrationName="PythonCalculator1", Input=reader
+        )
+        self.calculator.Expression = f"-(abs(points[:,2] + {self._z_scalar}))"
 
+        self.warp_by_scalar = WarpByScalar(
+            registrationName="WarpByScalar1", Input=self.calculator
+        )
+        self.warp_by_scalar.Scalars = ["POINTS", "result"]
 
-def setup_camera(render_view, config):
-    if "cameraPosition" in config:
-        render_view.CameraPosition = config["cameraPosition"]
+    def get_output(self):
+        return self.warp_by_scalar
 
-    if "cameraFocalPoint" in config:
-        render_view.CameraFocalPoint = config["cameraFocalPoint"]
+    def get_reader(self):
+        return self.reader
 
-    if "cameraViewUp" in config:
-        render_view.CameraViewUp = config["cameraViewUp"]
+    def enable_ln(self, enable):
+        self._z_ln = enable
+        self.update()
 
-    if "cameraViewAngle" in config:
-        render_view.CameraViewAngle = config["cameraViewAngle"]
+    @property
+    def z_scalar(self):
+        return self._z_scalar
 
-    if "cameraParallelScale" in config:
-        render_view.CameraParallelScale = config["cameraParallelScale"]
+    @z_scalar.setter
+    def z_scalar(self, array):
+        self._z_scalar = array
+        self.update()
 
+    def update(self):
+        if self._z_ln:
+            self.calculator.Expression = (
+                f"-(abs(points[:,2] + numpy.log({self._z_scalar})))"
+            )
+        else:
+            self.calculator.Expression = f"-(abs(points[:,2] + {self._z_scalar}))"
 
-def create_layout(render_views):
-    [render_view_1, render_view_2, render_view_3, render_view_4] = render_views
-    # create new layout object 'Layout #1'
-    layout = CreateLayout(name="Layout #1")
-    layout.SplitHorizontal(0, 0.500000)
-    layout.SplitVertical(1, 0.500000)
-    layout.AssignView(3, render_view_1)
-    layout.AssignView(4, render_view_2)
-    layout.SplitVertical(2, 0.500000)
-    layout.AssignView(5, render_view_3)
-    layout.AssignView(6, render_view_4)
-    layout.SetSize(2839, 1713)
+    def z_axes_array_names(self):
+        names = self.get_output().PointData.keys()
 
-
-def create_source(args):
-    # create a new 'NetCDF CAM reader'
-    source = NetCDFCAMreader(
-        registrationName="PD_1800_ad4fd8_ANN_climo_SE.nc",
-        ConnectivityFileName=f"{args.data_dir}/ne30np4_latlon.nc",
-        FileName=[f"{args.data_dir}/PD_1800_ad4fd8_ANN_climo_SE.nc"],
-    )
-    source.PointArrayStatus = [
-        "AEROD_v [time,ncol]",
-        "AODDUST1 [time,ncol]",
-        "AODDUST3 [time,ncol]",
-        "AODVIS [time,ncol]",
-        "CDNUMC [time,ncol]",
-        "CLDHGH [time,ncol]",
-        "CLDLOW [time,ncol]",
-        "CLDMED [time,ncol]",
-        "CLDTOT [time,ncol]",
-        "FLDS [time,ncol]",
-        "FLNS [time,ncol]",
-        "FLNSC [time,ncol]",
-        "FLNT [time,ncol]",
-        "FLNTC [time,ncol]",
-        "FLUT [time,ncol]",
-        "FLUTC [time,ncol]",
-        "FSDS [time,ncol]",
-        "FSDSC [time,ncol]",
-        "FSNS [time,ncol]",
-        "FSNSC [time,ncol]",
-        "FSNT [time,ncol]",
-        "FSNTC [time,ncol]",
-        "FSNTOA [time,ncol]",
-        "FSNTOAC [time,ncol]",
-        "ICEFRAC [time,ncol]",
-        "LANDFRAC [time,ncol]",
-        "LHFLX [time,ncol]",
-        "LWCF [time,ncol]",
-        "OCNFRAC [time,ncol]",
-        "PBLH [time,ncol]",
-        "PHIS [time,ncol]",
-        "PRECC [time,ncol]",
-        "PRECL [time,ncol]",
-        "PRECSC [time,ncol]",
-        "PRECSL [time,ncol]",
-        "PS [time,ncol]",
-        "PSL [time,ncol]",
-        "QFLX [time,ncol]",
-        "SHFLX [time,ncol]",
-        "SNOWHICE [time,ncol]",
-        "SNOWHLND [time,ncol]",
-        "SOLIN [time,ncol]",
-        "SWCF [time,ncol]",
-        "TAUX [time,ncol]",
-        "TAUY [time,ncol]",
-        "TGCLDIWP [time,ncol]",
-        "TGCLDLWP [time,ncol]",
-        "TMQ [time,ncol]",
-        "TREFHT [time,ncol]",
-        "TS [time,ncol]",
-        "U10 [time,ncol]",
-        "ANRAIN [time,lev, ncol]",
-        "ANSNOW [time,lev, ncol]",
-        "AQRAIN [time,lev, ncol]",
-        "AQSNOW [time,lev, ncol]",
-        "AREI [time,lev, ncol]",
-        "AREL [time,lev, ncol]",
-        "AWNC [time,lev, ncol]",
-        "AWNI [time,lev, ncol]",
-        "CCN3 [time,lev, ncol]",
-        "CLDICE [time,lev, ncol]",
-        "CLDLIQ [time,lev, ncol]",
-        "CLOUD [time,lev, ncol]",
-        "DCQ [time,lev, ncol]",
-        "DTCOND [time,lev, ncol]",
-        "DTV [time,lev, ncol]",
-        "FICE [time,lev, ncol]",
-        "FREQI [time,lev, ncol]",
-        "FREQL [time,lev, ncol]",
-        "FREQR [time,lev, ncol]",
-        "FREQS [time,lev, ncol]",
-        "ICIMR [time,lev, ncol]",
-        "ICWMR [time,lev, ncol]",
-        "IWC [time,lev, ncol]",
-        "NUMICE [time,lev, ncol]",
-        "NUMLIQ [time,lev, ncol]",
-        "OMEGA [time,lev, ncol]",
-        "OMEGAT [time,lev, ncol]",
-        "Q [time,lev, ncol]",
-        "QRL [time,lev, ncol]",
-        "QRS [time,lev, ncol]",
-        "RELHUM [time,lev, ncol]",
-        "T [time,lev, ncol]",
-        "U [time,lev, ncol]",
-        "UU [time,lev, ncol]",
-        "V [time,lev, ncol]",
-        "VD01 [time,lev, ncol]",
-        "VQ [time,lev, ncol]",
-        "VT [time,lev, ncol]",
-        "VU [time,lev, ncol]",
-        "VV [time,lev, ncol]",
-        "WSUB [time,lev, ncol]",
-        "Z3 [time,lev, ncol]",
-    ]
-
-    return source
+        return [name for name in names if name in Z_SCALARS]
 
 
-def setup_visualization(display, z_scale, render_view):
-    # get 2D transfer function for 'U'
-    uTF2D = GetTransferFunction2D("U")
+class View:
+    def __init__(self, reader):
+        self._view = None
+        self._scale = None
+        self._render_view = self._create_render_view()
+        self._pipeline = ProcessingPipeline(reader)
+        self._z_log_scale = False
+        self._lut_color_bar = None
 
-    # get color transfer function/color map for 'U'
-    uLUT = GetColorTransferFunction("U")
-    uLUT.TransferFunction2D = uTF2D
-    uLUT.RGBPoints = [
-        -21.407419204711914,
-        0.231373,
-        0.298039,
-        0.752941,
-        15.344744682312012,
-        0.865003,
-        0.865003,
-        0.865003,
-        52.09690856933594,
-        0.705882,
-        0.0156863,
-        0.14902,
-    ]
-    uLUT.ScalarRangeInitialized = 1.0
+        # self._pipelines.append(pipeline)
 
-    # get opacity transfer function/opacity map for 'U'
-    uPWF = GetOpacityTransferFunction("U")
-    uPWF.Points = [-21.407419204711914, 0.0, 0.5, 0.0, 52.09690856933594, 1.0, 0.5, 0.0]
-    uPWF.ScalarRangeInitialized = 1
+        # z_scale = self._z_axes_scale()
+        self._setup_display()
+        # displays.append(display)
+        ResetCamera(view=self.render_view)
+        self._setup_axes()
+        # render_views.append(render_view)
 
-    # trace defaults for the display properties.
-    display.Representation = "Surface"
-    display.ColorArrayName = ["POINTS", "U"]
-    display.LookupTable = uLUT
-    display.SelectTCoordArray = "None"
-    display.SelectNormalArray = "None"
-    display.SelectTangentArray = "None"
-    display.Scale = [1.0, 1.0, z_scale]
-    display.Texture = None
-    display.BaseColorTexture = None
-    display.NormalTexture = None
-    display.CoatNormalTexture = None
-    display.MaterialTexture = None
-    display.AnisotropyTexture = None
-    display.EmissiveTexture = None
-    display.OSPRayScaleArray = "ANRAIN"
-    display.OSPRayScaleFunction = "PiecewiseFunction"
-    display.SelectOrientationVectors = "None"
-    display.ScaleFactor = 36.00000000000003
-    display.SelectScaleArray = "ANRAIN"
-    display.GlyphType = "Arrow"
-    display.GlyphTableIndexArray = "ANRAIN"
-    display.GaussianRadius = 1.8000000000000014
-    display.SetScaleArray = ["POINTS", "ANRAIN"]
-    display.ScaleTransferFunction = "PiecewiseFunction"
-    display.OpacityArray = ["POINTS", "ANRAIN"]
-    display.OpacityTransferFunction = "PiecewiseFunction"
-    display.DataAxesGrid = "GridAxesRepresentation"
-    display.PolarAxes = "PolarAxesRepresentation"
-    display.ScalarOpacityFunction = uPWF
-    display.ScalarOpacityUnitDistance = 3.599181859937947
-    display.OpacityArrayName = ["POINTS", "ANRAIN"]
-    display.SelectInputVectors = ["POINTS", ""]
-    display.WriteLog = ""
-    display.PolarAxes.Scale = [1.0, 1.0, z_scale]
+    def _z_axes_scale(self):
+        bounds = self._pipeline.get_output().GetDataInformation().GetBounds()
+        y_bounds = bounds[2:4]
+        y_delta = abs(y_bounds[0] - y_bounds[1])
+        z_range = (
+            self._pipeline.get_output()
+            .PointData.GetArray(self._pipeline.z_scalar)
+            .GetRange()
+        )
+        if self._z_log_scale:
+            z_range = [log(z_range[0]), log(z_range[1])]
 
-    # init the 'PiecewiseFunction' selected for 'ScaleTransferFunction'
-    display.ScaleTransferFunction.Points = [
-        0.0,
-        0.0,
-        0.5,
-        0.0,
-        81995.0234375,
-        1.0,
-        0.5,
-        0.0,
-    ]
+        z_delta = abs(z_range[0] - z_range[1])
 
-    # init the 'PiecewiseFunction' selected for 'OpacityTransferFunction'
-    display.OpacityTransferFunction.Points = [
-        0.0,
-        0.0,
-        0.5,
-        0.0,
-        81995.0234375,
-        1.0,
-        0.5,
-        0.0,
-    ]
+        return y_delta / z_delta
 
-    # setup the color legend parameters for each legend in this view
+    def _create_render_view(self):
+        render_view = CreateView("RenderView")
+        render_view.ViewSize = [1420, 857]
+        render_view.AxesGrid = "GridAxes3DActor"
+        render_view.CenterOfRotation = [179.99999999999986, 0.0, 14.5]
+        render_view.StereoType = "Crystal Eyes"
 
-    # get color legend/bar for uLUT in view render_view_1
-    uLUTColorBar = GetScalarBar(uLUT, render_view)
-    uLUTColorBar.Orientation = "Horizontal"
-    uLUTColorBar.WindowLocation = "Any Location"
-    uLUTColorBar.Position = [0.43910211267605626, 0.011074766355140209]
-    uLUTColorBar.Title = "U"
-    uLUTColorBar.ComponentTitle = ""
-    uLUTColorBar.ScalarBarLength = 0.33000000000000007
+        return render_view
 
-    # set color bar visibility
-    uLUTColorBar.Visibility = 1
+    def _setup_axes(self):
+        name = self._pipeline.z_scalar
+        units = Z_SCALARS_UNITS[name]
+        title = f"{name} ({units})"
+        if self._z_log_scale:
+            title = f"ln({name})"
 
-    # show color legend
-    display.SetScalarBarVisibility(render_view, True)
+        self.render_view.AxesGrid.ZTitle = title
+
+        self.render_view.AxesGrid.Visibility = 1
+
+        z_axes_scale = self._z_axes_scale()
+
+        self._display.Scale = [1.0, 1.0, z_axes_scale]
+        self._display.PolarAxes.Scale = [1.0, 1.0, z_axes_scale]
+
+        self.render_view.AxesGrid.DataScale = [1.0, 1.0, -z_axes_scale]
+
+        self.render_view.AxesGrid.Modified()
+
+    def _setup_display(self):
+        self._pipeline.get_output().UpdatePipeline
+        self._display = Show(
+            self._pipeline.get_output(),
+            self._render_view,
+            "UnstructuredGridRepresentation",
+        )
+
+        self.color_by(DEFAULT_ARRAY)
+
+    def color_by(self, array):
+        # get 2D transfer function for 'U'
+        tf2D = GetTransferFunction2D(array)
+
+        # get color transfer function/color map for 'U'
+        lut = GetColorTransferFunction(array)
+        lut.TransferFunction2D = tf2D
+        lut.ScalarRangeInitialized = 1.0
+
+        # get opacity transfer function/opacity map for 'U'
+        pwf = GetOpacityTransferFunction(array)
+        pwf.Points = [
+            -21.407419204711914,
+            0.0,
+            0.5,
+            0.0,
+            52.09690856933594,
+            1.0,
+            0.5,
+            0.0,
+        ]
+        pwf.ScalarRangeInitialized = 1
+
+        # trace defaults for the display properties.
+        self._display.Representation = "Surface"
+        self._display.ColorArrayName = ["POINTS", array]
+        self._display.LookupTable = lut
+        self._display.SelectTCoordArray = "None"
+        self._display.SelectNormalArray = "None"
+        self._display.SelectTangentArray = "None"
+        self._display.Scale = [1.0, 1.0, self._z_axes_scale()]
+        self._display.Texture = None
+        self._display.BaseColorTexture = None
+        self._display.NormalTexture = None
+        self._display.CoatNormalTexture = None
+        self._display.MaterialTexture = None
+        self._display.AnisotropyTexture = None
+        self._display.EmissiveTexture = None
+        self._display.OSPRayScaleArray = "ANRAIN"
+        self._display.OSPRayScaleFunction = "PiecewiseFunction"
+        self._display.SelectOrientationVectors = "None"
+        self._display.ScaleFactor = 36.00000000000003
+        self._display.SelectScaleArray = "ANRAIN"
+        self._display.GlyphType = "Arrow"
+        self._display.GlyphTableIndexArray = "ANRAIN"
+        self._display.GaussianRadius = 1.8000000000000014
+        self._display.SetScaleArray = ["POINTS", "ANRAIN"]
+        self._display.ScaleTransferFunction = "PiecewiseFunction"
+        self._display.OpacityArray = ["POINTS", "ANRAIN"]
+        self._display.OpacityTransferFunction = "PiecewiseFunction"
+        self._display.DataAxesGrid = "GridAxesRepresentation"
+        self._display.PolarAxes = "PolarAxesRepresentation"
+        self._display.ScalarOpacityFunction = pwf
+        self._display.ScalarOpacityUnitDistance = 3.599181859937947
+        self._display.OpacityArrayName = ["POINTS", "ANRAIN"]
+        self._display.SelectInputVectors = ["POINTS", ""]
+        self._display.WriteLog = ""
+        self._display.PolarAxes.Scale = [1.0, 1.0, self._z_axes_scale()]
+
+        # Hide the previous one
+        if self._lut_color_bar is not None:
+            self._lut_color_bar.Visibility = 0
+
+        # Get the new one
+        self._lut_color_bar = GetScalarBar(lut, self._render_view)
+        self._lut_color_bar.Orientation = "Horizontal"
+        self._lut_color_bar.WindowLocation = "Any Location"
+        self._lut_color_bar.Position = [0.43910211267605626, 0.011074766355140209]
+        self._lut_color_bar.Title = array
+        self._lut_color_bar.ComponentTitle = ""
+        self._lut_color_bar.ScalarBarLength = 0.33000000000000007
+
+        # set color bar visibility
+        self._lut_color_bar.Visibility = 1
+
+        # show color legend
+        self._display.SetScalarBarVisibility(self._render_view, True)
+
+    @property
+    def render_view(self):
+        return self._render_view
+
+    def _update_axes_actor(self):
+        # Hack to ensure AxesGrid is updated in trame!
+        self.render_view.AxesGrid.Visibility = False
+        Render(view=self.render_view)
+        self.render_view.AxesGrid.Visibility = True
+        Render(view=self.render_view)
+
+    def create_component(self):
+        server = get_server()
+        state, _ = server.state, server.controller
+        ln_z_axis_key = f"view_{id(self)}_ln_z_axis"
+
+        @state.change(ln_z_axis_key)
+        def on_ln_z_axis_change(*parg, **kwargs):
+            value = kwargs[ln_z_axis_key]
+            self._pipeline.enable_ln(value)
+            self._pipeline.get_output().UpdatePipeline()
+            self._z_log_scale = value
+
+            z_scale = self._z_axes_scale()
+            self._display.Scale = [1.0, 1.0, -z_scale]
+            self._setup_axes()
+            self._update_axes_actor()
+            self.update()
+
+        variables = self._pipeline.get_output().PointData.keys()
+        color_by_state_key = f"view_{id(self)}_color_by"
+        z_axis_scalar_state_key = f"view_{id(self)}_z_axis_scalar"
+
+        @state.change(color_by_state_key)
+        def on_color_by_changed(*pargs, **kwargs):
+            array = kwargs[color_by_state_key]
+            self.color_by(array)
+            self.update()
+
+        @state.change(z_axis_scalar_state_key)
+        def on_z_axis_scalar_changed(*pargs, **kwargs):
+            array = kwargs[z_axis_scalar_state_key]
+            self._pipeline.z_scalar = array
+            self._setup_axes()
+            self._update_axes_actor()
+            self.update()
+
+        with vuetify.VContainer(fluid=True, classes="pa-0 fill-height"):
+            with vuetify.VRow(dense=True, style="height: 90%;"):
+                with vuetify.VCol():
+                    self._view = paraview.VtkRemoteView(
+                        self._render_view, ref=f"view{id(self)}"
+                    )
+            with vuetify.VRow(dense=True, style="height: 10%;"):
+                with vuetify.VContainer(fluid=True, classes="pa-0 fill-height"):
+                    with vuetify.VRow(
+                        dense=True, style="height: 100%;", classes="justify-end"
+                    ):
+                        with vuetify.VCol():
+                            vuetify.VSelect(
+                                # Color By
+                                label="Color by",
+                                v_model=(color_by_state_key, DEFAULT_ARRAY),
+                                items=("array_list", variables),
+                                dense=True,
+                                outlined=True,
+                            )
+                        with vuetify.VCol():
+                            vuetify.VSelect(
+                                # Color By
+                                label="Z Axis",
+                                v_model=(
+                                    z_axis_scalar_state_key,
+                                    self._pipeline.z_axes_array_names()[0],
+                                ),
+                                items=(
+                                    "z_axes_array_list",
+                                    self._pipeline.z_axes_array_names(),
+                                ),
+                                dense=True,
+                                outlined=True,
+                            )
+                        with vuetify.VCol():
+                            vuetify.VCheckbox(
+                                v_model=(ln_z_axis_key, False),
+                                label="Apply ln to Z",
+                                dense=True,
+                                classes="mx-2",
+                            )
+
+    def update(self):
+        self._view.update()
 
 
-def create_single_page(render_views):
-    server = get_server()
-    state, ctrl = server.state, server.controller
-
-    [render_view_1, render_view_2, render_view_3, render_view_4] = render_views
-    views = []
-
-    def update_views(**kwargs):
-        for v in views:
-            v.update()
-
-    ctrl.on_server_ready.add(ctrl.view_update)
-    ctrl.view_update = update_views
-
-    with SinglePageLayout(server) as layout:
-        with layout.content:
-            layout.title.set_text("EAM Application")
-            with vuetify.VContainer(fluid=True, classes="pa-0 fill-height"):
-                with vuetify.VRow(dense=True, style="height: 50%;"):
-                    with vuetify.VCol():
-                        views.append(paraview.VtkRemoteView(render_view_1, ref="view1"))
-                    with vuetify.VCol():
-                        views.append(paraview.VtkRemoteView(render_view_2, ref="view2"))
-                with vuetify.VRow(dense=True, style="height: 50%;"):
-                    with vuetify.VCol():
-                        views.append(paraview.VtkRemoteView(render_view_3, ref="view3"))
-                    with vuetify.VCol():
-                        views.append(paraview.VtkRemoteView(render_view_4, ref="view4"))
-    server.start()
+views = []
 
 
-def z_axes_array_names(source):
-    names = source.PointData.keys()
-    return [name for name in names if name in ["lev", "ilev"]]
+class App:
+    def __init__(self, data_dir):
+        self._server = get_server()
+        self._reader = self._create_source(data_dir)
+        SetActiveSource(self._reader)
 
+        self._views = []
 
-def z_axes_scale(source):
-    bounds = source.GetDataInformation().GetBounds()
-    y_bounds = bounds[2:4]
-    y_delta = abs(y_bounds[0] - y_bounds[1])
-    z_bounds = bounds[4:6]
-    z_delta = abs(z_bounds[0] - z_bounds[1])
+        for i in range(0, 4):
+            view = View(self._reader)
+            self._views.append(view)
 
-    return z_delta / y_delta
+        # self._create_layout()
+        self._create_single_page()
 
+    def _create_source(self, data_dir):
+        # create a new 'NetCDF CAM reader'
+        source = NetCDFCAMreader(
+            registrationName="PD_1800_ad4fd8_ANN_climo_SE.nc",
+            ConnectivityFileName=f"{data_dir}/ne30np4_latlon.nc",
+            FileName=[f"{data_dir}/PD_1800_ad4fd8_ANN_climo_SE.nc"],
+        )
 
-def setup_axes(source, render_view, z_scale):
-    names = z_axes_array_names(source)
-    name = names[0]
+        return source
 
-    if name in ["lev", "ilev"]:
-        render_view.AxesGrid.ZTitle = f"{name} (hPa)"
+    def _render_views(self):
+        return [v.render_view for v in self._views]
 
-    render_view.AxesGrid.Visibility = 1
-    render_view.AxesGrid.DataScale = [1.0, 1.0, -z_scale]
+    def _create_single_page(self):
+        server = get_server()
+        _, ctrl = server.state, server.controller
 
+        def update_views(**kwargs):
+            for v in self._views:
+                v.update()
 
-def setup_pipeline(source):
-    calculator = PythonCalculator(registrationName="PythonCalculator1", Input=source)
-    calculator.Expression = "-(abs(points[:,2] + lev))"
+        ctrl.on_server_ready.add(ctrl.view_update)
+        ctrl.view_update = update_views
 
-    warp_by_scalar = WarpByScalar(registrationName="WarpByScalar1", Input=calculator)
-    warp_by_scalar.Scalars = ["POINTS", "result"]
+        [view1, view2, view3, view4] = self._views
 
-    return warp_by_scalar
+        with SinglePageLayout(server) as layout:
+            with layout.content:
+                layout.title.set_text("EAM Application")
+                with vuetify.VContainer(fluid=True, classes="pa-0 fill-height"):
+                    with vuetify.VRow(dense=True, style="height: 50%;"):
+                        with vuetify.VCol():
+                            view1.create_component()
+                        with vuetify.VCol():
+                            view2.create_component()
+                    with vuetify.VRow(dense=True, style="height: 50%;"):
+                        with vuetify.VCol():
+                            view3.create_component()
+                        with vuetify.VCol():
+                            view4.create_component()
+
+    def start(self):
+        self._server.start()
 
 
 def main():
@@ -372,26 +389,9 @@ def main():
         required=True,
     )
     args = server.cli.parse_args()
-    reader = create_source(args)
-    source = setup_pipeline(reader)
-    source.UpdatePipeline()
-    z_scale = z_axes_scale(reader)
 
-    render_views = []
-    for i in range(0, 4):
-        render_view = create_render_view()
-        display = Show(source, render_view, "UnstructuredGridRepresentation")
-        setup_visualization(display, z_scale, render_view)
-        setup_camera(render_view, camera_config[i])
-        setup_axes(source, render_view, z_scale)
-        render_views.append(render_view)
-
-    create_layout(render_views)
-
-    SetActiveView(render_views[0])
-    SetActiveSource(source)
-
-    create_single_page(render_views)
+    app = App(args.data_dir)
+    app.start()
 
 
 main()
