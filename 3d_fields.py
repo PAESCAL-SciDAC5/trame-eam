@@ -13,6 +13,7 @@ from trame.widgets import vuetify, paraview
 from trame.ui.vuetify import SinglePageLayout
 
 from math import log
+from pathlib import Path
 
 DEFAULT_ARRAY = "CLOUD"
 Z_SCALARS = ["lev", "ilev", "Z3"]
@@ -320,9 +321,9 @@ views = []
 
 
 class App:
-    def __init__(self, data_dir):
+    def __init__(self, data_file, conn_file):
         self._server = get_server()
-        self._reader = self._create_source(data_dir)
+        self._reader = self._create_source(data_file, conn_file)
         SetActiveSource(self._reader)
 
         self._views = []
@@ -334,12 +335,12 @@ class App:
         # self._create_layout()
         self._create_single_page()
 
-    def _create_source(self, data_dir):
+    def _create_source(self, data_file, conn_file):
         # create a new 'NetCDF CAM reader'
         source = NetCDFCAMreader(
-            registrationName="PD_1800_ad4fd8_ANN_climo_SE.nc",
-            ConnectivityFileName=f"{data_dir}/ne30np4_latlon.nc",
-            FileName=[f"{data_dir}/PD_1800_ad4fd8_ANN_climo_SE.nc"],
+            registrationName=Path(data_file).name,
+            ConnectivityFileName=conn_file,
+            FileName=[data_file],
         )
 
         return source
@@ -383,14 +384,22 @@ def main():
     server = get_server()
     server.cli.add_argument(
         "-x",
-        "--data-dir",
-        help="Directory containing data",
-        dest="data_dir",
+        "--data-file",
+        help="The path to the NetCDF file",
+        dest="data_file",
+        required=True,
+    )
+
+    server.cli.add_argument(
+        "-o",
+        "--connectivity-file",
+        help="The path to the appropriate connectivity file",
+        dest="conn_file",
         required=True,
     )
     args = server.cli.parse_args()
 
-    app = App(args.data_dir)
+    app = App(args.data_file, args.conn_file)
     app.start()
 
 
