@@ -4,7 +4,7 @@
 # Setup
 
 * Create conda environment containing ParaView
-  * `conda create -n eam -c conda-forge paraview`
+  * `conda create -n eam -c cjh1 -c conda-forge paraview`
   * `conda activate eam`
 
 # Run
